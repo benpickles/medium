@@ -19,6 +19,10 @@ module Medium
       request(:get, '/v1/me')
     end
 
+    def publications
+      request(:get, "/v1/users/#{user_id}/publications")
+    end
+
     def request(method, path, data = nil)
       uri = URI.parse(API_BASE)
       uri.path = path

@@ -84,4 +84,40 @@ describe Medium::Client do
       end
     end
   end
+
+  describe '#publications' do
+    let(:publications_url) { 'https://api.medium.com/v1/users/5303d74c64f66366f00cb9b2a94f3251bf5/publications' }
+    let(:response) { client.publications }
+
+    before do
+      stub_request(:get, me_url).and_return(response_fixture('me'))
+    end
+
+    context 'when successful' do
+      let(:publications_http_response) { response_fixture('publications') }
+
+      before do
+        stub_request(:get, publications_url).and_return(publications_http_response)
+      end
+
+      it 'returns response data' do
+        expect(response['data']).to eql([
+          {
+            'description' => 'What is this thing and how does it work?',
+            'id' => 'b969ac62a46b',
+            'imageUrl' => 'https://cdn-images-1.medium.com/fit/c/200/200/0*ae1jbP_od0W6EulE.jpeg',
+            'name' => 'About Medium',
+            'url' => 'https://medium.com/about',
+          },
+          {
+            'description' => 'Medium’s Developer resources',
+            'id' => 'b45573563f5a',
+            'imageUrl' => 'https://cdn-images-1.medium.com/fit/c/200/200/1*ccokMT4VXmDDO1EoQQHkzg@2x.png',
+            'name' => 'Developers',
+            'url' => 'https://medium.com/developers',
+          }
+        ])
+      end
+    end
+  end
 end
