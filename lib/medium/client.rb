@@ -15,6 +15,10 @@ module Medium
       request(:post, "/v1/users/#{user_id}/posts", params)
     end
 
+    def create_publication_post(publication_id, params)
+      request(:post, "/v1/publications/#{publication_id}/posts", params)
+    end
+
     def me
       request(:get, '/v1/me')
     end
