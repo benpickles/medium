@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "data": {
+    "id": "5303d74c64f66366f00cb9b2a94f3251bf5",
+    "username": "majelbstoat",
+    "name": "Jamie Talbot",
+    "url": "https://medium.com/@majelbstoat",
+    "imageUrl": "https://images.medium.com/0*fkfQiTzT7TlUGGyI.png"
+  }
+}
