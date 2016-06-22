@@ -19,6 +19,10 @@ module Medium
       request(:get, '/v1/me')
     end
 
+    def publication_contributors(publication_id)
+      request(:get, "/v1/publications/#{publication_id}/contributors")
+    end
+
     def publications
       request(:get, "/v1/users/#{user_id}/publications")
     end

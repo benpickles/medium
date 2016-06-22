@@ -85,6 +85,53 @@ describe Medium::Client do
     end
   end
 
+  describe '#publication_contributors' do
+    let(:contributors_url) { 'https://api.medium.com/v1/publications/b45573563f5a/contributors' }
+    let(:response) { client.publication_contributors('b45573563f5a') }
+
+    before do
+      stub_request(:get, me_url).and_return(response_fixture('me'))
+    end
+
+    context 'when successful' do
+      let(:contributors_http_response) { response_fixture('publication_contributors') }
+
+      before do
+        stub_request(:get, contributors_url).and_return(contributors_http_response)
+      end
+
+      it 'returns response data' do
+        expect(response['data']).to eql([
+          {
+            'publicationId' => 'b45573563f5a',
+            'role' => 'editor',
+            'userId' => '13a06af8f81849c64dafbce822cbafbfab7ed7cecf82135bca946807ea351290d',
+          },
+          {
+            'publicationId' => 'b45573563f5a',
+            'role' => 'editor',
+            'userId' => '1c9c63b15b874d3e354340b7d7458d55e1dda0f6470074df1cc99608a372866ac',
+          },
+          {
+            'publicationId' => 'b45573563f5a',
+            'role' => 'editor',
+            'userId' => '1cc07499453463518b77d31650c0b53609dc973ad8ebd33690c7be9236e9384ad',
+          },
+          {
+            'publicationId' => 'b45573563f5a',
+            'role' => 'writer',
+            'userId' => '196f70942410555f4b3030debc4f199a0d5a0309a7b9df96c57b8ec6e4b5f11d7',
+          },
+          {
+            'publicationId' => 'b45573563f5a',
+            'role' => 'writer',
+            'userId' => '14d4a581f21ff537d245461b8ff2ae9b271b57d9554e25d863e3df6ef03ddd480',
+          }
+        ])
+      end
+    end
+  end
+
   describe '#publications' do
     let(:publications_url) { 'https://api.medium.com/v1/users/5303d74c64f66366f00cb9b2a94f3251bf5/publications' }
     let(:response) { client.publications }
