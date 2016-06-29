@@ -1,0 +1,11 @@
+HTTP/1.1 400 Bad Request
+Content-Type: application/json; charset=utf-8
+
+{
+  "errors": [
+    {
+      "message": "No content specified.",
+      "code": 2002
+    }
+  ]
+}

@@ -14,6 +14,7 @@ describe Medium::Client do
 
     before do
       stub_request(:get, me_url).and_return(me)
+      stub_request(:post, post_url).and_return(create_post_http_response)
     end
 
     context 'when successful' do
@@ -30,7 +31,6 @@ describe Medium::Client do
       }
 
       before do
-        stub_request(:post, post_url).and_return(create_post_http_response)
         response
       end
 
@@ -62,6 +62,28 @@ describe Medium::Client do
         })
       end
     end
+
+    context 'with an unknown access token' do
+      let(:create_post_http_response) { response_fixture('create_post-401') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::UnauthorizedError, 'Token was invalid.')
+      end
+    end
+
+    context 'with bad data' do
+      let(:create_post_http_response) { response_fixture('create_post-400') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::BadRequestError, 'No content specified.')
+      end
+    end
   end
 
   describe '#create_publication_post' do
@@ -71,6 +93,7 @@ describe Medium::Client do
 
     before do
       stub_request(:get, me_url).and_return(me)
+      stub_request(:post, publication_post_url).and_return(create_post_http_response)
     end
 
     context 'when successful' do
@@ -87,7 +110,6 @@ describe Medium::Client do
       }
 
       before do
-        stub_request(:post, publication_post_url).and_return(create_post_http_response)
         response
       end
 
@@ -120,10 +142,31 @@ describe Medium::Client do
         })
       end
     end
+
+    context 'with an unknown access token' do
+      let(:create_post_http_response) { response_fixture('create_publication_post-401') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::UnauthorizedError, 'Token was invalid.')
+      end
+    end
+
+    context 'with bad data' do
+      let(:create_post_http_response) { response_fixture('create_publication_post-400') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::BadRequestError, 'No content specified.')
+      end
+    end
   end
 
   describe '#me' do
-    let(:me_http_response) { response_fixture('me') }
     let(:response) { client.me }
 
     before do
@@ -131,6 +174,8 @@ describe Medium::Client do
     end
 
     context 'when successful' do
+      let(:me_http_response) { response_fixture('me') }
+
       it 'returns response data' do
         expect(response['data']).to eql({
           'id' => '5303d74c64f66366f00cb9b2a94f3251bf5',
@@ -141,6 +186,16 @@ describe Medium::Client do
         })
       end
     end
+
+    context 'with an unknown access token' do
+      let(:me_http_response) { response_fixture('me-401') }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::UnauthorizedError, 'Token was invalid.')
+      end
+    end
   end
 
   describe '#publication_contributors' do
@@ -149,14 +204,11 @@ describe Medium::Client do
 
     before do
       stub_request(:get, me_url).and_return(response_fixture('me'))
+      stub_request(:get, contributors_url).and_return(contributors_http_response)
     end
 
     context 'when successful' do
       let(:contributors_http_response) { response_fixture('publication_contributors') }
-
-      before do
-        stub_request(:get, contributors_url).and_return(contributors_http_response)
-      end
 
       it 'returns response data' do
         expect(response['data']).to eql([
@@ -188,6 +240,16 @@ describe Medium::Client do
         ])
       end
     end
+
+    context 'with an unknown access token' do
+      let(:contributors_http_response) { response_fixture('publication_contributors-401') }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::UnauthorizedError, 'Token was invalid.')
+      end
+    end
   end
 
   describe '#publications' do
@@ -196,14 +258,11 @@ describe Medium::Client do
 
     before do
       stub_request(:get, me_url).and_return(response_fixture('me'))
+      stub_request(:get, publications_url).and_return(publications_http_response)
     end
 
     context 'when successful' do
       let(:publications_http_response) { response_fixture('publications') }
-
-      before do
-        stub_request(:get, publications_url).and_return(publications_http_response)
-      end
 
       it 'returns response data' do
         expect(response['data']).to eql([
@@ -222,6 +281,28 @@ describe Medium::Client do
             'url' => 'https://medium.com/developers',
           }
         ])
+      end
+    end
+
+    context 'with an incorrect userId' do
+      let(:publications_http_response) { response_fixture('publications-400') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::BadRequestError, 'userId was invalid.')
+      end
+    end
+
+    context 'with an unknown access token' do
+      let(:publications_http_response) { response_fixture('create_post-401') }
+      let(:params) { {} }
+
+      it do
+        expect {
+          response
+        }.to raise_error(Medium::UnauthorizedError, 'Token was invalid.')
       end
     end
   end

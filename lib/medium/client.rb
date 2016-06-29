@@ -1,3 +1,4 @@
+require_relative './errors'
 require 'json'
 require 'uri'
 
@@ -52,7 +53,16 @@ module Medium
         http.request(req)
       }
 
-      JSON.parse(res.body)
+      data = JSON.parse(res.body)
+
+      case res.code.to_i
+      when 400
+        raise BadRequestError.new(data)
+      when 401
+        raise UnauthorizedError.new(data)
+      end
+
+      data
     end
 
     def user_id
