@@ -1,5 +1,7 @@
 # Medium API Ruby Client
 
+[![Build Status](https://travis-ci.org/benpickles/medium-rb.svg?branch=master)](https://travis-ci.org/benpickles/medium-rb)
+
 Requires a Medium access token, a [self-issued access token](https://github.com/Medium/medium-api-docs#22-self-issued-access-tokens) is the easiest way to get started.
 
 ## Example
