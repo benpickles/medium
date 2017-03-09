@@ -1,6 +1,7 @@
 # Medium API Ruby Client
 
 [![Build Status](https://travis-ci.org/benpickles/medium.svg?branch=master)](https://travis-ci.org/benpickles/medium)
+[![API Testing](https://img.shields.io/badge/API%20Test-RapidAPI-blue.svg)](https://rapidapi.com/package/Medium/functions?utm_source=MediumGithub&utm_medium=button&utm_content=Vender_GitHub)
 
 Requires a Medium access token, a [self-issued access token](https://github.com/Medium/medium-api-docs#22-self-issued-access-tokens) is the easiest way to get started.
 
