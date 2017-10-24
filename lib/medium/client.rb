@@ -1,5 +1,6 @@
 require_relative './errors'
 require 'json'
+require 'net/http'
 require 'uri'
 
 module Medium
